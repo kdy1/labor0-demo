@@ -13,8 +13,7 @@ if (!root) {
 createRoot(root).render(
   <StrictMode>
     <main className="app-shell">
-      <ReleaseStatusCard status={releaseStatus} />
+      <ReleaseStatusCard referenceTime={new Date()} status={releaseStatus} />
     </main>
   </StrictMode>,
 );
-

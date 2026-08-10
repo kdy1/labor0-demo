@@ -92,6 +92,20 @@ h1 {
   margin: 7px 0 0;
 }
 
+.release-card__updated {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.release-card__freshness {
+  border: 1px solid #d4d4d8;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 2px 6px;
+}
+
 .release-card__metadata code {
   background: #f4f4f5;
   padding: 3px 6px;
