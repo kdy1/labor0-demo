@@ -1,0 +1,33 @@
+{
+  "name": "labor0-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "packageManager": "pnpm@10.17.1",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "dev": "rsbuild dev",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview",
+    "typecheck": "tsc --noEmit",
+    "test": "rstest run"
+  },
+  "dependencies": {
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "2.0.15",
+    "@rsbuild/plugin-react": "2.0.1",
+    "@rstest/core": "0.9.9",
+    "@testing-library/react": "16.3.2",
+    "@types/node": "24.12.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "jsdom": "29.1.1",
+    "typescript": "6.0.3"
+  }
+}
+
