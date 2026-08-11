@@ -27,6 +27,9 @@ const statusWithChecks = (checks: readonly ReleaseCheck[]): ReleaseStatus => ({
   checks,
 });
 
+const visibleStatusCount = (status: "Passed" | "Pending" | "Failed"): number =>
+  screen.getAllByText(status, { selector: ".release-card__check-status" }).length;
+
 describe("ReleaseStatusCard", () => {
   it("retains the release metadata and renders the required-check outcome", () => {
     render(<ReleaseStatusCard status={statusWithChecks(reviewChecks)} />);
@@ -35,9 +38,9 @@ describe("ReleaseStatusCard", () => {
     expect(screen.getByText("main")).toBeTruthy();
     expect(screen.getByText("Aug 11, 2026, 8:52 AM")).toBeTruthy();
     expect(screen.getByText("Blocked")).toBeTruthy();
-    expect(screen.getAllByText("Passed")).toHaveLength(2);
-    expect(screen.getAllByText("Pending")).toHaveLength(2);
-    expect(screen.getAllByText("Failed")).toHaveLength(2);
+    expect(visibleStatusCount("Passed")).toBe(2);
+    expect(visibleStatusCount("Pending")).toBe(2);
+    expect(visibleStatusCount("Failed")).toBe(2);
     expect(screen.getAllByText("required")).toHaveLength(3);
     expect(screen.getAllByText("optional")).toHaveLength(3);
   });
@@ -79,14 +82,14 @@ describe("ReleaseStatusCard", () => {
     expect(document.activeElement).toBe(attention);
     expect(attention.getAttribute("aria-pressed")).toBe("true");
     expect(screen.getByRole("status").textContent).toBe("4 checks shown");
-    expect(screen.getByText("No build checks match this filter.")).toBeTruthy();
-    expect(screen.getAllByText("Pending")).toHaveLength(2);
-    expect(screen.getAllByText("Failed")).toHaveLength(2);
+    expect(screen.queryByText("No build checks match this filter.")).toBeNull();
+    expect(visibleStatusCount("Pending")).toBe(2);
+    expect(visibleStatusCount("Failed")).toBe(2);
 
     fireEvent.click(passed);
     expect(passed.getAttribute("aria-pressed")).toBe("true");
     expect(screen.getByRole("status").textContent).toBe("2 checks shown");
-    expect(screen.getAllByText("Passed")).toHaveLength(2);
+    expect(visibleStatusCount("Passed")).toBe(2);
     expect(screen.getByText("No test checks match this filter.")).toBeTruthy();
   });
 
