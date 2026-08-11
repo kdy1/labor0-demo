@@ -1,4 +1,6 @@
-export type ReleaseCheckCategory = "build" | "test" | "security";
+export const releaseCheckCategories = ["build", "test", "security"] as const;
+
+export type ReleaseCheckCategory = (typeof releaseCheckCategories)[number];
 
 export type ReleaseCheckStatus = "passed" | "pending" | "failed";
 
@@ -63,23 +65,9 @@ const compareBlockers = (left: ReleaseCheck, right: ReleaseCheck): number =>
   statusOrder[left.status] - statusOrder[right.status];
 
 /**
- * Readiness truth table (a row considered alone):
- *
- * | Requirement | Status  | Outcome      | Included as a blocker |
- * |-------------|---------|--------------|-----------------------|
- * | required    | passed  | ready        | no                    |
- * | required    | pending | inProgress   | yes                   |
- * | required    | failed  | blocked      | yes                   |
- * | optional    | passed  | ready        | no                    |
- * | optional    | pending | ready        | no                    |
- * | optional    | failed  | ready        | no                    |
- * | no checks   | n/a     | ready        | no                    |
- *
- * For multiple checks, blocked takes precedence over inProgress, which takes
- * precedence over ready. Counts always include required and optional checks.
- * Blockers use domain order (Build, Test, Security), then binary label order,
- * then status order (failed, pending) so input/rendering order cannot affect
- * the result.
+ * Required passed checks are ready; required pending checks are in progress;
+ * and required failed checks are blocked. Optional checks never block readiness.
+ * With multiple checks, blocked takes precedence over in progress and ready.
  */
 export const deriveReleaseReadiness = (
   checks: readonly ReleaseCheck[],
@@ -134,42 +122,12 @@ export const deriveReleaseReadiness = (
 export const releaseStatus: ReleaseStatus = {
   branch: "main",
   checks: [
-    {
-      category: "build",
-      label: "TypeScript",
-      required: true,
-      status: "passed",
-    },
-    {
-      category: "build",
-      label: "Preview image",
-      required: false,
-      status: "pending",
-    },
-    {
-      category: "test",
-      label: "Component tests",
-      required: true,
-      status: "pending",
-    },
-    {
-      category: "test",
-      label: "Browser smoke tests",
-      required: false,
-      status: "failed",
-    },
-    {
-      category: "security",
-      label: "Dependency audit",
-      required: true,
-      status: "failed",
-    },
-    {
-      category: "security",
-      label: "License review",
-      required: false,
-      status: "passed",
-    },
+    { category: "build", label: "TypeScript", required: true, status: "passed" },
+    { category: "build", label: "Preview image", required: false, status: "pending" },
+    { category: "test", label: "Component tests", required: true, status: "pending" },
+    { category: "test", label: "Browser smoke tests", required: false, status: "failed" },
+    { category: "security", label: "Dependency audit", required: true, status: "failed" },
+    { category: "security", label: "License review", required: false, status: "passed" },
   ],
   releaseName: "August release candidate",
   updatedAt: "2026-08-11T08:52:00.000Z",

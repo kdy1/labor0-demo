@@ -23,6 +23,11 @@ select {
   font: inherit;
 }
 
+button:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
 .app-shell {
   align-items: center;
   background:
@@ -47,15 +52,18 @@ select {
 
 .release-card__header,
 .release-card__section-heading,
-.release-card__checks li {
+.release-card__check,
+.release-card__check-details {
   align-items: center;
   display: flex;
   justify-content: space-between;
 }
 
 .release-card__label,
-.release-card__metadata dt {
-  color: #71717a;
+.release-card__metadata dt,
+.release-card__counts dt,
+.release-card__check-requirement {
+  color: #52525b;
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -71,10 +79,21 @@ h1 {
 }
 
 .release-card__state {
-  background: #18181b;
   color: #ffffff;
   font-size: 0.82rem;
   padding: 9px 12px;
+}
+
+.release-card__state--ready {
+  background: #166534;
+}
+
+.release-card__state--inProgress {
+  background: #a16207;
+}
+
+.release-card__state--blocked {
+  background: #b91c1c;
 }
 
 .release-card__metadata {
@@ -98,34 +117,161 @@ h1 {
 }
 
 .release-card__section-heading {
+  gap: 16px;
   margin-bottom: 12px;
 }
 
-.release-card__section-heading h2 {
+.release-card__section-heading h2,
+.release-card__blockers h3,
+.release-card__group h3 {
   font-size: 1rem;
   margin: 0;
 }
 
 .release-card__section-heading span {
-  color: #71717a;
+  color: #52525b;
   font-size: 0.86rem;
+  white-space: nowrap;
+}
+
+.release-card__overview {
+  border-bottom: 1px solid #e4e4e7;
+  padding-bottom: 24px;
+}
+
+.release-card__counts {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.release-card__counts > div {
+  background: #f4f4f5;
+  padding: 12px;
+}
+
+.release-card__counts dd {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 4px 0 0;
+}
+
+.release-card__blockers {
+  margin-top: 20px;
+}
+
+.release-card__blockers ol,
+.release-card__blockers p {
+  margin: 8px 0 0;
+}
+
+.release-card__blockers li + li {
+  margin-top: 4px;
+}
+
+.release-card__check-review {
+  margin-top: 24px;
+}
+
+.release-card__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.release-card__filter {
+  background: #ffffff;
+  border: 1px solid #a1a1aa;
+  color: #27272a;
+  cursor: pointer;
+  min-height: 38px;
+  padding: 7px 10px;
+}
+
+.release-card__filter[aria-pressed="true"] {
+  background: #18181b;
+  border-color: #18181b;
+  color: #ffffff;
+}
+
+.release-card__filter span {
+  background: currentcolor;
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.25rem;
+  margin-left: 5px;
+  min-width: 1.25rem;
+  padding: 0 4px;
+}
+
+.release-card__filter[aria-pressed="true"] span {
+  background: #ffffff;
+  color: #18181b;
+}
+
+.release-card__live-status {
+  color: #52525b;
+  font-size: 0.86rem;
+  margin: 12px 0;
+}
+
+.release-card__groups {
+  display: grid;
+  gap: 20px;
+}
+
+.release-card__group h3 {
+  border-bottom: 1px solid #d4d4d8;
+  padding-bottom: 8px;
 }
 
 .release-card__checks {
-  display: grid;
-  gap: 0;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.release-card__checks li {
-  border-top: 1px solid #e4e4e7;
+.release-card__check {
+  border-bottom: 1px solid #e4e4e7;
+  gap: 16px;
   min-height: 52px;
+  padding: 8px 0;
 }
 
-.release-card__checks strong {
+.release-card__check-label {
+  font-weight: 650;
+}
+
+.release-card__check-details {
+  flex-shrink: 0;
+  gap: 10px;
+}
+
+.release-card__check-status {
   font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.release-card__check-status--passed {
+  color: #166534;
+}
+
+.release-card__check-status--pending {
+  color: #92400e;
+}
+
+.release-card__check-status--failed {
+  color: #b91c1c;
+}
+
+.release-card__empty {
+  color: #52525b;
+  font-size: 0.9rem;
+  margin: 10px 0 0;
 }
 
 @media (max-width: 620px) {
@@ -145,5 +291,21 @@ h1 {
 
   .release-card__metadata {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .release-card {
+    padding: 20px;
+  }
+
+  .release-card__check {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .release-card__check-details {
+    align-self: flex-start;
   }
 }
