@@ -15,6 +15,9 @@ describe("ReleaseStatusCard", () => {
     ).toBeTruthy();
     expect(screen.getByText("main")).toBeTruthy();
     expect(screen.getByText("Aug 11, 2026, 8:52 AM")).toBeTruthy();
-    expect(screen.getAllByText("Passed")).toHaveLength(3);
+    expect(screen.getByText("Blocked")).toBeTruthy();
+    expect(screen.getAllByText("Passed")).toHaveLength(2);
+    expect(screen.getAllByText("Pending")).toHaveLength(2);
+    expect(screen.getAllByText("Failed")).toHaveLength(2);
   });
 });
